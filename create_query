@@ -1,0 +1,125 @@
+-- Database Schema Scripts
+
+-- Table 1: Movies
+CREATE TABLE Movies (
+    movie_id VARCHAR(100) PRIMARY KEY,
+    title VARCHAR(100),
+    rating FLOAT,
+    status VARCHAR(100),
+    poster VARCHAR(100),
+    star_cast TEXT,
+    genre_id VARCHAR(100) REFERENCES Genres(genre_id)
+);
+
+-- Table 2: Screens
+CREATE TABLE Screens (
+    screen_id VARCHAR(10) PRIMARY KEY,
+    screen_name VARCHAR(100),
+    movie_id VARCHAR(100) REFERENCES Movies(movie_id)
+);
+
+-- Table 3: Shows
+CREATE TABLE Shows (
+    show_id VARCHAR(100) PRIMARY KEY,
+    show_time TIME,
+    show_date DATE,
+    screen_id VARCHAR(100) REFERENCES Screens(screen_id),
+    movie_id VARCHAR(100) REFERENCES Movies(movie_id),
+    seat_number VARCHAR(100),
+    class_type VARCHAR(100)
+);
+
+-- Table 4: Bookings
+CREATE TABLE Bookings (
+    booking_id VARCHAR(100) PRIMARY KEY,
+    user_id VARCHAR(100) REFERENCES Users(user_id),
+    show_id VARCHAR(100) REFERENCES Shows(show_id),
+    total_cost FLOAT,
+    booking_date DATE
+);
+
+-- Table 5: Users
+CREATE TABLE Users (
+    user_id VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100),
+    email_id VARCHAR(100),
+    phone_number VARCHAR(100),
+    membership_status VARCHAR(100),
+    points INT
+);
+
+-- Table 6: Payments
+CREATE TABLE Payments (
+    payment_id VARCHAR(100) PRIMARY KEY,
+    booking_id VARCHAR(100) REFERENCES Bookings(booking_id),
+    amount FLOAT,
+    payment_gateway VARCHAR(100),
+    payment_status VARCHAR(100)
+);
+
+-- Table 7: QR Codes
+CREATE TABLE QRCodes (
+    qr_id VARCHAR(100) PRIMARY KEY,
+    booking_id VARCHAR(100) REFERENCES Bookings(booking_id),
+    scan_status VARCHAR(100)
+);
+
+-- Table 8: FoodOrders
+CREATE TABLE FoodOrders (
+    food_order_id VARCHAR(100) PRIMARY KEY,
+    booking_id VARCHAR(100) REFERENCES Bookings(booking_id),
+    item_id VARCHAR(100) REFERENCES Items(item_id),
+    cost FLOAT
+);
+
+-- Table 9: Memberships
+CREATE TABLE Memberships (
+    membership_id VARCHAR(100) PRIMARY KEY,
+    user_id VARCHAR(100) REFERENCES Users(user_id),
+    membership_type VARCHAR(100),
+    start_date DATE,
+    end_date DATE,
+    status VARCHAR(100)
+);
+
+-- Table 10: Reviews
+CREATE TABLE Reviews (
+    review_id VARCHAR(100) PRIMARY KEY,
+    user_id VARCHAR(100) REFERENCES Users(user_id),
+    movie_id VARCHAR(100) REFERENCES Movies(movie_id),
+    rating FLOAT,
+    review_text TEXT,
+    review_date DATE
+);
+
+-- Table 11: StarCasts
+CREATE TABLE StarCasts (
+    starcast_id VARCHAR(100) PRIMARY KEY,
+    movie_id VARCHAR(100) REFERENCES Movies(movie_id),
+    actor_name VARCHAR(100),
+    role VARCHAR(100)
+);
+
+-- Table 12: Cards
+CREATE TABLE Cards (
+    card_id VARCHAR(100) PRIMARY KEY,
+    user_id VARCHAR(100) REFERENCES Users(user_id),
+    card_holder_name VARCHAR(100),
+    card_number VARCHAR(100),
+    expiry_date DATE,
+    cvv INT,
+    card_type VARCHAR(100)
+);
+
+-- Table 13: Items
+CREATE TABLE Items (
+    item_id VARCHAR(100) PRIMARY KEY,
+    item_name VARCHAR(100),
+    combos VARCHAR(200)
+);
+
+-- Table 14: Genres
+CREATE TABLE Genres (
+    genre_id VARCHAR(100) PRIMARY KEY,
+    genre_type VARCHAR(100)
+);
